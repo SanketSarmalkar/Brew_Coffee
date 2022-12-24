@@ -11,8 +11,11 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final user = Provider.of<UserUid?>(context);
-    print(user);
-
-    return Authenticate();
+    //print(user);
+    if(user==null){
+      return Authenticate();
+    }else{
+      return Home();
+    }
   }
 }

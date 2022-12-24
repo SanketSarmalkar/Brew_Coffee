@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project/models/user.dart';
 
@@ -35,4 +37,12 @@ class AuthService{
   // register with email & pass
 
   // sign out
+  Future signOut() async{
+    try{
+      return await _auth.signOut();
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
 }
