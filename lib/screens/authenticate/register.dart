@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../services/auth.dart';
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+  final Function toggleView;
+
+  const Register({Key? key, required this.toggleView}) : super(key: key);
 
   @override
   State<Register> createState() => _RegisterState();
@@ -12,9 +14,12 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
 
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+
   // text field state
   String email = '';
   String password = '';
+  String error = "";
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +29,32 @@ class _RegisterState extends State<Register> {
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
         title: Text('Sign Up'),
+        actions: <Widget>[
+          MaterialButton(
+            onPressed: () {
+              widget.toggleView();
+            },
+            child:Row(
+              children: [
+                Icon(Icons.app_registration),
+                Text("sign In")
+              ],
+            ),
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               SizedBox(
                 height: 20.0,
               ),
               TextFormField(
-                onChanged: (val) {
+                  validator: (val)=>val!.isEmpty? 'Enter an Email':(error=="")?null:error,
+                  onChanged: (val) {
                   setState(() {
                     email = val;
                   });
@@ -45,7 +65,8 @@ class _RegisterState extends State<Register> {
               ),
               TextFormField(
                 obscureText: true,
-                onChanged: (val) {
+                  validator: (val)=>val!.length<8?'Password should have minimum lenght of 8':null,
+                  onChanged: (val) {
                   setState(()=> password=val);
                 },
               ),
@@ -54,8 +75,12 @@ class _RegisterState extends State<Register> {
               ),
               MaterialButton(
                 onPressed: () async {
-                  print(email);
-                  print(password);
+                  if(_formKey.currentState!.validate()) {
+                     dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                     if(result==null){
+                       setState(()=>error = "pls. enter a valid email address");
+                     }
+                  }
                 },
                 color: Colors.brown[900],
                 child: Text(
