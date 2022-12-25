@@ -6,7 +6,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'models/user.dart';
 
-
+//https://pub.dev/packages/provider/install
+//https://pub.dev/packages/firebase_auth/install
+//https://pub.dev/packages/cloud_firestore/install
+//https://pub.dev/packages/flutter_spinkit
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
