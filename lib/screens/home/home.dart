@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_project/components/loading.dart';
 import 'package:firebase_project/screens/home/brew_list.dart';
+import 'package:firebase_project/screens/home/setting_form.dart';
 import 'package:firebase_project/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_project/services/database.dart';
@@ -18,7 +19,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
-
+  void _showSettingPanel(){
+    showModalBottomSheet(context: context, builder: (context){
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+        child: SettingForm(),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +48,13 @@ class _HomeState extends State<Home> {
                 else print("error in Signing Out");
               },
             ),
+            IconButton(
+                onPressed: (){
+                   _showSettingPanel();
+                },
+                icon: Icon(Icons.settings),
+
+            )
           ],
         ),
         body: BrewList(),
