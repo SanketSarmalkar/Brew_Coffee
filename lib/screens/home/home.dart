@@ -19,6 +19,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
+  bool toClose = false;
   void _showSettingPanel(){
     showModalBottomSheet(context: context, builder: (context){
       return Container(
@@ -50,7 +51,8 @@ class _HomeState extends State<Home> {
             ),
             IconButton(
                 onPressed: (){
-                   _showSettingPanel();
+                  setState(()=>toClose=true);
+                  if(toClose) _showSettingPanel();
                 },
                 icon: Icon(Icons.settings),
 
